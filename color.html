@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Palette Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #c3bda4; 
+      padding: 20px;
+      color: #362d24; 
+      position: relative;
+      transition: background-color 1s ease;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      position: relative;
+      z-index: 1;
+      animation: ancient-fade-in 2s ease-out;
+    }
+
+    @keyframes ancient-fade-in {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      color: #574c3d; 
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    @keyframes ancient-pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .color-palette {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .color {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100px;
+      height: 100px;
+      margin: 5px;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+      animation: ancient-pulse 2s infinite;
+    }
+
+    .color:hover {
+      transform: scale(1.1);
+      animation: none;
+    }
+
+    button {
+      padding: 8px 16px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #7b6342; 
+      color: #fff;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #4f3d27; 
+    }
+
+    .container::after {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: -20px;
+      right: -20px;
+      bottom: -20px;
+      border: 20px solid #8b7d68; 
+      border-radius: 20px;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Color Palette Generator</h1>
+    <div class="color-palette" id="colorPalette"></div>
+    <button id="generateButton">Generate Random Palette</button>
+  </div>
+
+  <script>
+    document.getElementById('generateButton').addEventListener('click', generateRandomPalette);
+
+    function generateRandomPalette() {
+      const colorPalette = document.getElementById('colorPalette');
+      colorPalette.innerHTML = '';
+
+      for (let i = 0; i < 5; i++) {
+        const color = getRandomColor();
+        const colorDiv = document.createElement('div');
+        colorDiv.className = 'color';
+        colorDiv.style.backgroundColor = color;
+        colorDiv.setAttribute('title', color);
+        colorDiv.addEventListener('click', () => copyColorToClipboard(color));
+        colorPalette.appendChild(colorDiv);
+      }
+
+      document.body.style.backgroundColor = getRandomColor();
+    }
+
+    function getRandomColor() {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    function copyColorToClipboard(color) {
+      navigator.clipboard.writeText(color)
+        .then(() => alert('Color copied to clipboard: ' + color))
+        .catch(err => console.error('Error copying color to clipboard:', err));
+    }
+  </script>
+</body>
+</html>
